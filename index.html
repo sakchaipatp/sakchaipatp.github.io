@@ -3,7 +3,9 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive -->
   <title>Portfolio Sakchai Patphai</title>
+  <!-- <link rel="icon" type="image/png" href="assets/favicon.png"> -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -23,9 +25,9 @@
   </header>
 
   <section id="about" class="section">
-    <img src="assets/profile.jpg" class="profile-img">
     <div>
       <h2>Character (About Me)</h2>
+      <img src="assets/profile.png" class="profile-img">
       <p>
         I am Sakchai Patphai, a student in Game and Interactive Media at Bangkok University with a cumulative GPA of
         3.87.
@@ -43,6 +45,16 @@
 
     <div class="skill-tree-container">
       <svg id="skill-lines"></svg>
+
+      <!-- zoom-controls -->
+      <div class="zoom-controls">
+        <button id="zoom-in">
+          <img src="assets/Icons/zoom_in_icon.png">
+        </button>
+        <button id="zoom-out">
+          <img src="assets/Icons/zoom_out_icon.png">
+        </button>
+      </div>
 
       <div class="skill-tree">
         <div class="skill-node main" id="skill-main">

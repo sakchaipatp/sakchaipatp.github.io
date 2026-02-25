@@ -8,12 +8,20 @@
 body {
   background: #0f172a;
   color: #e5e7eb;
+
+  padding-top: 120px
 }
 
 header {
   background: #020617;
   padding: 20px;
-  text-align: center;
+  text-align: left;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 h1 {
@@ -39,6 +47,7 @@ nav a:hover {
 
 .section {
   padding: 60px 15%;
+  scroll-margin-top: 120px;
 }
 
 h2 {
@@ -53,20 +62,41 @@ h2 {
   align-items: center;
 }
 
-/* #about h2 {
-  margin-top: 20px;
-  margin-bottom: 20px;
-} */
-
 .profile-img {
   width: 300px;
   border-radius: 50%;
   border: 3px solid #38bdf8;
+  margin-bottom: 20px;
 }
 
 /* Skills Tree */
 .skill-tree-container {
   position: relative;
+  height: 500px;
+  border: 2px solid #38bdf8;
+  border-radius: 16px;
+  overflow: hidden;
+  background: repeating-linear-gradient(
+    45deg,
+    #020617,
+    #020617 10px,
+    #030b1d 10px,
+    #030b1d 20px
+  );
+
+  cursor: grab;
+}
+
+.skill-tree-container:active {
+  cursor: grabbing;
+}
+
+.skill-tree,
+.skill-node,
+.skill-node img,
+.skill-node p {
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 #skill-lines {
@@ -83,10 +113,9 @@ h2 {
   justify-items: center;
   position: relative;
 
-  /* display: flex;
-  justify-content: center;
-  gap: 50px;
-  flex-wrap: wrap; */
+  cursor: grab;
+  transition: transform 0.05s linear;
+
 }
 
 .skill-node {
@@ -99,8 +128,18 @@ h2 {
   align-content: center;
 }
 
+.skill-node:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #facc15;
+}
+
 .skill-node.main {
   grid-column: 2;
+}
+
+#skills {
+  background: radial-gradient(circle at top, #020617, #0f172a);
+  overflow: hidden;
 }
 
 .stars {
@@ -110,6 +149,31 @@ h2 {
 .skill-node img {
   margin-bottom: 10px;
   width: 60px;
+  pointer-events: none;
+}
+
+/* .zoom-controls */
+.zoom-controls {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+}
+
+.zoom-controls button {
+  background: #020617;
+  border: 1px solid #38bdf8;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.zoom-controls img {
+  width: 24px;
+  height: 24px;
 }
 
 /* Projects */
