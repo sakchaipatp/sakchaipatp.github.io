@@ -86,6 +86,36 @@ window.addEventListener("mouseleave", () => {
   isDragging = false;
 });
 
+// Skill hover
+const tooltip = document.getElementById("skill-tooltip");
+
+document.querySelectorAll(".skill-node").forEach(node => {
+  node.addEventListener("mouseenter", e => {
+    let html = `<strong>${node.innerText}</strong><br>`;
+
+    if (node.dataset.level) {
+      html += `Level: ${node.dataset.level}<br>`;
+      html += `Rating: ${node.dataset.stars}<br>`;
+    }
+
+    if (node.dataset.desc) {
+      html += `<br>${node.dataset.desc}`;
+    }
+
+    tooltip.innerHTML = html;
+    tooltip.style.display = "block";
+  });
+
+  node.addEventListener("mousemove", e => {
+    tooltip.style.left = e.clientX + 15 + "px";
+    tooltip.style.top = e.clientY + 15 + "px";
+  });
+
+  node.addEventListener("mouseleave", () => {
+    tooltip.style.display = "none";
+  });
+});
+
 // zoom control
 let scale = 1;
 const minScale = 0.8;
