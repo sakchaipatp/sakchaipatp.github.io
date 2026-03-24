@@ -26,30 +26,75 @@ const children = [
 const svg = document.getElementById("skill-lines");
 const tree = document.querySelector(".skill-tree");
 
+// ================= TREE STRUCTURE =================
+const treeData = {
+  "node-skills": ["node-tech", "node-soft"],
+
+  "node-tech": ["node-programming", "node-tools", "node-others"],
+
+  "node-programming": [
+    "skill-csharp", "skill-oop", "skill-py",
+    "skill-html", "skill-css", "skill-js", "skill-lua"
+  ],
+
+  "node-tools": [
+    "skill-unity", "skill-github", "skill-notion",
+    "skill-clickup", "skill-docs", "skill-spreadsheets",
+    "skill-canva", "skill-figma"
+  ],
+
+  "node-others": ["skill-math"],
+
+  "node-soft": [
+    "skill-positive-attitude",
+    "skill-willingness-to-improve",
+    "skill-growth",
+    "skill-open-to-feedback",
+    "skill-patience",
+    "skill-persistence",
+    "skill-responsibility",
+    "skill-design-thinking",
+    "skill-critical-thinking"
+  ]
+};
+
 function drawLines() {
   svg.innerHTML = "";
 
-  const mainRect = main.getBoundingClientRect();
   const containerRect = svg.getBoundingClientRect();
 
-  children.forEach(child => {
-    const childRect = child.getBoundingClientRect();
+  Object.keys(treeData).forEach(parentId => {
+    const parent = document.getElementById(parentId);
+    const children = treeData[parentId];
 
-    const x1 = mainRect.left + mainRect.width / 2 - containerRect.left;
-    const y1 = mainRect.bottom - containerRect.top;
+    if (!parent) return;
 
-    const x2 = childRect.left + childRect.width / 2 - containerRect.left;
-    const y2 = childRect.top - containerRect.top;
+    const parentRect = parent.getBoundingClientRect();
 
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", x1);
-    line.setAttribute("y1", y1);
-    line.setAttribute("x2", x2);
-    line.setAttribute("y2", y2);
-    line.setAttribute("stroke", "#38bdf8");
-    line.setAttribute("stroke-width", "2");
+    children.forEach(childId => {
+      const child = document.getElementById(childId);
+      if (!child) return;
 
-    svg.appendChild(line);
+      const childRect = child.getBoundingClientRect();
+
+      const x1 = parentRect.left + parentRect.width / 2 - containerRect.left;
+      const y1 = parentRect.bottom - containerRect.top;
+
+      const x2 = childRect.left + childRect.width / 2 - containerRect.left;
+      const y2 = childRect.top - containerRect.top;
+
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+      line.setAttribute("x1", x1);
+      line.setAttribute("y1", y1);
+      line.setAttribute("x2", x2);
+      line.setAttribute("y2", y2);
+
+      line.setAttribute("stroke", "#38bdf8");
+      line.setAttribute("stroke-width", "2");
+
+      svg.appendChild(line);
+    });
   });
 }
 
@@ -183,11 +228,47 @@ function applyBounds() {
 
 
 window.addEventListener("load", () => {
+  layoutTree();
+
   const container = document.querySelector(".skill-tree-container");
 
-  currentX = (container.clientWidth - tree.offsetWidth) / 2;
-  currentY = 40;
+  currentX = container.clientWidth / 2;
+  currentY = 50;
 
   updateTransform();
 });
+
+function layoutTree() {
+  const levelMap = {}; // level -> nodes[]
+
+  function traverse(nodeId, depth = 0) {
+    if (!levelMap[depth]) levelMap[depth] = [];
+    levelMap[depth].push(nodeId);
+
+    const children = treeData[nodeId] || [];
+    children.forEach(child => traverse(child, depth + 1));
+  }
+
+  traverse("node-skills");
+
+  // spacing
+  const levelGap = 180;  // แนวตั้ง
+  const nodeGap = 180;   // แนวนอน
+
+  Object.keys(levelMap).forEach(level => {
+    const nodes = levelMap[level];
+    const totalWidth = (nodes.length - 1) * nodeGap;
+
+    nodes.forEach((id, index) => {
+      const node = document.getElementById(id);
+      if (!node) return;
+
+      const x = index * nodeGap - totalWidth / 2;
+      const y = level * levelGap;
+
+      node.style.left = `${x}px`;
+      node.style.top = `${y}px`;
+    });
+  });
+}
 //End Skill
