@@ -26,6 +26,47 @@ const children = [
 const svg = document.getElementById("skill-lines");
 const tree = document.querySelector(".skill-tree");
 
+// ================= GRID POSITIONS =================
+// col: a=1, b=2, ..., l=12 | row: 1–6
+const gridPositions = {
+  "node-skills":                  { col: 8,  row: 1 },
+
+  "node-tech":                    { col: 5,  row: 2 },
+  "node-soft":                    { col: 11, row: 2 },
+
+  "node-programming":             { col: 2,  row: 3 },
+  "node-tools":                   { col: 5,  row: 3 },
+  "node-others":                  { col: 7,  row: 3 },
+  "skill-positive-attitude":      { col: 10, row: 3 },
+  "skill-willingness-to-improve": { col: 11, row: 3 },
+  "skill-growth":                 { col: 12, row: 3 },
+
+  "skill-csharp":                 { col: 1,  row: 4 },
+  "skill-oop":                    { col: 2,  row: 4 },
+  "skill-py":                     { col: 3,  row: 4 },
+  "skill-unity":                  { col: 4,  row: 4 },
+  "skill-github":                 { col: 5,  row: 4 },
+  "skill-notion":                 { col: 6,  row: 4 },
+  "skill-math":                   { col: 7,  row: 4 },
+  "skill-open-to-feedback":       { col: 10, row: 4 },
+  "skill-persistence":            { col: 11, row: 4 },
+  "skill-responsibility":         { col: 12, row: 4 },
+
+  "skill-html":                   { col: 1,  row: 5 },
+  "skill-css":                    { col: 2,  row: 5 },
+  "skill-js":                     { col: 3,  row: 5 },
+  "skill-clickup":                { col: 4,  row: 5 },
+  "skill-docs":                   { col: 5,  row: 5 },
+  "skill-spreadsheets":           { col: 6,  row: 5 },
+  "skill-canva":                  { col: 7,  row: 5 },
+  "skill-figma":                  { col: 8,  row: 5 },
+  "skill-design-thinking":        { col: 10, row: 5 },
+  "skill-critical-thinking":      { col: 11, row: 5 },
+  "skill-patience":               { col: 12, row: 5 },
+
+  "skill-lua":                    { col: 1,  row: 6 },
+};
+
 // ================= TREE STRUCTURE =================
 const treeData = {
   "node-skills": ["node-tech", "node-soft"],
@@ -232,43 +273,35 @@ window.addEventListener("load", () => {
 
   const container = document.querySelector(".skill-tree-container");
 
-  currentX = container.clientWidth / 2;
-  currentY = 50;
+  // จัด tree ให้อยู่กึ่งกลาง container แนวนอน (scale=1 ตอนเริ่ม)
+  currentX = (container.clientWidth - tree.offsetWidth * scale) / 2;
+  currentY = 0;
 
   updateTransform();
 });
 
 function layoutTree() {
-  const levelMap = {}; // level -> nodes[]
+  const colWidth  = 160;
+  const rowHeight = 200;
+  const padding   = 40;
 
-  function traverse(nodeId, depth = 0) {
-    if (!levelMap[depth]) levelMap[depth] = [];
-    levelMap[depth].push(nodeId);
+  let maxCol = 0;
+  let maxRow = 0;
 
-    const children = treeData[nodeId] || [];
-    children.forEach(child => traverse(child, depth + 1));
-  }
+  Object.keys(gridPositions).forEach(id => {
+    const node = document.getElementById(id);
+    if (!node) return;
 
-  traverse("node-skills");
+    const { col, row } = gridPositions[id];
+    node.style.left = `${(col - 1) * colWidth + padding}px`;
+    node.style.top  = `${(row - 1) * rowHeight + padding}px`;
 
-  // spacing
-  const levelGap = 180;  // แนวตั้ง
-  const nodeGap = 180;   // แนวนอน
-
-  Object.keys(levelMap).forEach(level => {
-    const nodes = levelMap[level];
-    const totalWidth = (nodes.length - 1) * nodeGap;
-
-    nodes.forEach((id, index) => {
-      const node = document.getElementById(id);
-      if (!node) return;
-
-      const x = index * nodeGap - totalWidth / 2;
-      const y = level * levelGap;
-
-      node.style.left = `${x}px`;
-      node.style.top = `${y}px`;
-    });
+    if (col > maxCol) maxCol = col;
+    if (row > maxRow) maxRow = row;
   });
+
+  // กำหนดขนาด tree จริง ให้ applyBounds() ทำงานถูกต้อง
+  tree.style.width  = `${maxCol * colWidth + padding * 2}px`;
+  tree.style.height = `${maxRow * rowHeight + padding * 2}px`;
 }
 //End Skill

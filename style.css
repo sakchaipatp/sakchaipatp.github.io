@@ -72,7 +72,7 @@ h2 {
 /* Skills Tree */
 .skill-tree-container {
   position: relative;
-  height: 500px;
+  height: 800px;
   border: 2px solid #38bdf8;
   border-radius: 16px;
   overflow: hidden;
@@ -107,15 +107,10 @@ h2 {
 }
 
 .skill-tree {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 80px;
-  justify-items: center;
   position: relative;
-
   cursor: grab;
   transition: transform 0.05s linear;
-
+  transform-origin: 0 0;
 }
 
 .skill-node {
