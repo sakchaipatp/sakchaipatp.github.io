@@ -144,12 +144,14 @@ window.addEventListener("resize", drawLines);
 
 // Drag skill tree
 let isDragging = false;
+let hasDragged  = false;
 let startX, startY;
 let currentX = 0;
 let currentY = 0;
 
 tree.addEventListener("mousedown", e => {
   isDragging = true;
+  hasDragged  = false;
   startX = e.clientX - currentX;
   startY = e.clientY - currentY;
   e.preventDefault();
@@ -157,6 +159,7 @@ tree.addEventListener("mousedown", e => {
 
 window.addEventListener("mousemove", e => {
   if (!isDragging) return;
+  hasDragged = true;
 
   currentX = e.clientX - startX;
   currentY = e.clientY - startY;
@@ -172,33 +175,66 @@ window.addEventListener("mouseleave", () => {
   isDragging = false;
 });
 
-// Skill hover
-const tooltip = document.getElementById("skill-tooltip");
+// ================= SKILL PANEL =================
+const GUIDE_HTML = `<span style="color:#94a3b8;font-style:italic;">
+  Explore my skill tree.<br>
+  Drag to move, scroll to zoom,<br>
+  and <strong style="color:#38bdf8;">click on a skill</strong> to view details.
+</span>`;
+const FADE_MS   = 300;
+const IDLE_MS   = 5000;
 
+const panel     = document.getElementById("skill-panel");
+let   idleTimer = null;
+
+function setPanelContent(html) {
+  panel.classList.add("fade-out");
+  setTimeout(() => {
+    panel.innerHTML = html;
+    panel.classList.remove("fade-out");
+  }, FADE_MS);
+}
+
+function showGuide() {
+  setPanelContent(GUIDE_HTML);
+}
+
+function startIdleTimer() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(showGuide, IDLE_MS);
+}
+
+// Click on skill nodes that have data-desc
 document.querySelectorAll(".skill-node").forEach(node => {
-  node.addEventListener("mouseenter", e => {
-    let html = `<strong>${node.innerText}</strong><br>`;
+  node.addEventListener("mouseup", () => {
+    if (hasDragged) return;           // ถ้า drag อยู่ให้ข้ามไป
+    if (!node.dataset.desc) return;   // category node ไม่มี desc
 
-    if (node.dataset.level) {
-      html += `Level: ${node.dataset.level}<br>`;
-      html += `Rating: ${node.dataset.stars}<br>`;
-    }
+    // หาชื่อ node = <p> ที่สั้นที่สุด (กัน long-text p ขึ้นมาก่อน)
+    const namePara = [...node.querySelectorAll("p")]
+      .find(p => p.innerText.trim().length < 50)
+      || node.querySelector("p");
+    const name  = namePara ? namePara.innerText.trim() : "";
+    const stars = node.dataset.stars
+      ? `<br><span style="color:gold;">${node.dataset.stars}</span>` : "";
+    const level = node.dataset.level
+      ? `<span style="color:#94a3b8;"> · ${node.dataset.level}</span>` : "";
+    const desc  = `<br><br>${node.dataset.desc}`;
 
-    if (node.dataset.desc) {
-      html += `<br>${node.dataset.desc}`;
-    }
-
-    tooltip.innerHTML = html;
-    tooltip.style.display = "block";
+    setPanelContent(
+      `<strong style="color:#38bdf8;">${name}</strong>${stars}${level}${desc}`
+    );
+    startIdleTimer();
   });
+});
 
-  node.addEventListener("mousemove", e => {
-    tooltip.style.left = e.clientX + 15 + "px";
-    tooltip.style.top = e.clientY + 15 + "px";
-  });
-
-  node.addEventListener("mouseleave", () => {
-    tooltip.style.display = "none";
+// กด nav ไป section อื่น → reset กลับ guide ทันที
+document.querySelectorAll("nav a").forEach(link => {
+  link.addEventListener("click", () => {
+    if (link.getAttribute("href") !== "#skills") {
+      clearTimeout(idleTimer);
+      showGuide();
+    }
   });
 });
 
@@ -278,6 +314,9 @@ window.addEventListener("load", () => {
   currentY = 0;
 
   updateTransform();
+
+  // แสดง guide text ทันทีโดยไม่ fade (ครั้งแรก)
+  panel.innerHTML = GUIDE_HTML;
 });
 
 function layoutTree() {
