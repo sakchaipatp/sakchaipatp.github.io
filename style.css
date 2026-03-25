@@ -3,15 +3,22 @@
    ====================================================
 
    พื้นหลัง
-   --bg-body    : พื้นหลังหลักของหน้าเว็บ
-   --bg-dark    : header, card, node background
+   --bg-body    : พื้นหลังหลักของหน้าเว็บ (light)
+   --bg-card    : card สีขาว (project / section cards)
+   --bg-warm    : card สีครีมอุ่น (cert cards, highlights)
+   --bg-dark    : dark surface — header, footer, skill nodes
    --bg-mid     : stripe ใน skill tree background
-   --text-main  : สีตัวอักษรทั่วไป
+
+   ตัวอักษร
+   --text-main    : ตัวอักษรบน light background
+   --text-muted   : ตัวอักษรรอง (captions, metadata)
+   --text-on-dark : ตัวอักษรบน dark surface (header, footer)
 
    สีหลัก
-   --accent     : น้ำเงิน  → heading, border, SVG line, link
-   --yellow     : เหลือง   → hover glow, h4, soft skill
-   --pink       : ชมพู    → nav hover
+   --accent      : น้ำเงิน  → heading, border, SVG line, link
+   --accent-soft : น้ำเงินอ่อน → bg tint
+   --yellow      : อำพัน   → hover glow, h4
+   --pink        : ชมพู    → nav hover
 
    กลุ่ม Skill Tree (เปลี่ยนสีกลุ่มได้ที่นี่)
    --group-prog   : สี Programming + ลูก
@@ -20,19 +27,29 @@
    --group-soft   : สี Soft Skills + ลูก
    ==================================================== */
 :root {
-  --bg-body:      #0f172a;
-  --bg-dark:      #020617;
-  --bg-mid:       #030b1d;
-  --text-main:    #e5e7eb;
+  /* ── พื้นหลัง ───────────────────────────── */
+  --bg-body:      #f5f8fb;   /* cool light gray-blue (main page bg) */
+  --bg-card:      #ffffff;   /* white — project cards */
+  --bg-warm:      #fff8f0;   /* warm cream — cert cards, highlights */
+  --bg-dark:      #101828;   /* dark navy — header, footer, skill nodes */
+  --bg-mid:       #1a2436;   /* slightly lighter navy — skill tree stripe */
 
-  --accent:       #38bdf8;
-  --yellow:       #facc15;
-  --pink:         #f472b6;
+  /* ── ตัวอักษร ──────────────────────────── */
+  --text-main:    #101828;   /* dark navy — body text */
+  --text-muted:   #64748b;   /* slate — secondary text */
+  --text-on-dark: #e2e8f0;   /* light — text on dark surfaces */
 
-  --group-prog:   #a855f7;
-  --group-tools:  #fb923c;
-  --group-others: #2dd4bf;
-  --group-soft:   #facc15;
+  /* ── สีหลัก ─────────────────────────────── */
+  --accent:       #0284c7;   /* deep sky blue */
+  --accent-soft:  #e0f2fe;   /* very light blue bg tint */
+  --yellow:       #d97706;   /* amber */
+  --pink:         #be185d;   /* deep pink */
+
+  /* ── กลุ่ม Skill Tree ───────────────────── */
+  --group-prog:   #7c3aed;   /* violet */
+  --group-tools:  #ea580c;   /* orange */
+  --group-others: #0891b2;   /* teal */
+  --group-soft:   #d97706;   /* amber */
 }
 
 * {
@@ -57,12 +74,12 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(2, 6, 23, 0.92);
+  background: rgba(16, 24, 40, 0.96);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(56, 189, 248, 0.15);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5),
-              0 1px 0 rgba(56, 189, 248, 0.08);
+  border-bottom: 1px solid rgba(2, 132, 199, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25),
+              0 1px 0 rgba(2, 132, 199, 0.1);
 }
 
 .header-inner {
@@ -111,12 +128,12 @@ nav {
 
 nav a {
   padding: 6px 10px;
-  color: var(--text-main);
+  color: var(--text-on-dark);   /* light text บน dark header */
   text-decoration: none;
   font-size: 0.78rem;
   font-weight: 500;
   border-radius: 6px;
-  opacity: 0.7;
+  opacity: 0.75;
   transition: color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
   position: relative;
 }
@@ -128,7 +145,7 @@ nav a {
 
 nav a:hover {
   color: var(--accent);
-  background: rgba(56, 189, 248, 0.08);
+  background: rgba(2, 132, 199, 0.12);
   opacity: 1;
 }
 
@@ -154,7 +171,7 @@ nav a.nav-active::after {
   margin-left: 10px;
   padding: 7px 16px !important;
   color: var(--accent) !important;
-  border: 1px solid rgba(56, 189, 248, 0.5);
+  border: 1px solid rgba(2, 132, 199, 0.5);
   border-radius: 6px;
   font-size: 0.78rem !important;
   font-weight: 600 !important;
@@ -165,9 +182,9 @@ nav a.nav-active::after {
 }
 
 .resume-btn:hover {
-  background: rgba(56, 189, 248, 0.12) !important;
+  background: rgba(2, 132, 199, 0.15) !important;
   border-color: var(--accent) !important;
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35) !important;
+  box-shadow: 0 0 14px rgba(2, 132, 199, 0.4) !important;
 }
 
 .section {
@@ -246,13 +263,20 @@ h2 {
   border-radius: 10px;
   text-align: center;
   background: var(--bg-dark);
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+  color: var(--text-on-dark);   /* text สีอ่อนบน dark node */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2),
+              0 0 8px rgba(2, 132, 199, 0.25);
   user-select: none;
+}
+
+.skill-node p {
+  color: var(--text-on-dark);
 }
 
 .skill-node:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px var(--yellow);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25),
+              0 0 20px var(--yellow);
 }
 
 .skill-node.main {
@@ -260,7 +284,7 @@ h2 {
 }
 
 #skills {
-  background: radial-gradient(circle at top, var(--bg-dark), var(--bg-body));
+  background: linear-gradient(160deg, var(--accent-soft) 0%, var(--bg-body) 55%);
   overflow: hidden;
 }
 
@@ -301,30 +325,36 @@ h2 {
 .group-prog.node-category,
 .group-prog.node-technical {
   border-color: var(--group-prog);
-  box-shadow: 0 0 8px rgba(168, 85, 247, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2),
+              0 0 10px rgba(124, 58, 237, 0.45);
 }
 .group-prog:hover {
-  box-shadow: 0 0 20px var(--group-prog);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25),
+              0 0 22px var(--group-prog);
 }
 
 /* Tools group */
 .group-tools.node-category,
 .group-tools.node-technical {
   border-color: var(--group-tools);
-  box-shadow: 0 0 8px rgba(251, 146, 60, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2),
+              0 0 10px rgba(234, 88, 12, 0.45);
 }
 .group-tools:hover {
-  box-shadow: 0 0 20px var(--group-tools);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25),
+              0 0 22px var(--group-tools);
 }
 
 /* Others group */
 .group-others.node-category,
 .group-others.node-technical {
   border-color: var(--group-others);
-  box-shadow: 0 0 8px rgba(45, 212, 191, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2),
+              0 0 10px rgba(8, 145, 178, 0.45);
 }
 .group-others:hover {
-  box-shadow: 0 0 20px var(--group-others);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25),
+              0 0 22px var(--group-others);
 }
 
 /* Soft Skills hover override */
@@ -340,13 +370,13 @@ h2 {
   width: 220px;
   max-height: 220px;
   overflow-y: auto;
-  background: rgba(2, 6, 23, 0.92);
+  background: rgba(16, 24, 40, 0.95);
   border: 1px solid var(--accent);
   border-radius: 10px;
   padding: 14px 16px;
   font-size: 0.82rem;
   line-height: 1.6;
-  color: var(--text-main);
+  color: var(--text-on-dark);   /* panel พื้นหลังเข้ม → text ต้องสีอ่อน */
   pointer-events: none;
   z-index: 10;
   opacity: 1;
@@ -391,9 +421,12 @@ h2 {
 }
 
 .project-card {
-  background: var(--bg-dark);
+  background: var(--bg-card);
   padding: 15px;
   border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(16, 24, 40, 0.08),
+              0 1px 3px rgba(16, 24, 40, 0.06);
+  border: 1px solid rgba(2, 132, 199, 0.1);
 }
 
 .project-card iframe {
@@ -433,9 +466,9 @@ h2 {
   align-items: center;
   gap: 6px;
   font-size: 0.82rem;
-  color: #94a3b8;
-  background: rgba(56, 189, 248, 0.06);
-  border: 1px solid rgba(56, 189, 248, 0.15);
+  color: var(--text-muted);
+  background: var(--accent-soft);
+  border: 1px solid rgba(2, 132, 199, 0.2);
   border-radius: 20px;
   padding: 3px 10px;
 }
@@ -482,11 +515,13 @@ h2 {
 }
 
 .cert-card {
-  background: #1e1e1e;
+  background: var(--bg-warm);
   padding: 10px;
   border-radius: 10px;
   text-align: center;
   margin-top: 30px;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.07);
+  border: 1px solid rgba(217, 119, 6, 0.12);
 }
 
 .cert-card img {
@@ -503,7 +538,7 @@ h2 {
 .shared-desc {
   text-align: center;
   margin-bottom: 10px;
-  color: #ccc;
+  color: var(--text-muted);
 }
 
 /* =====================================================
@@ -521,7 +556,8 @@ h2 {
 }
 
 .contact-item a {
-  color: #ffffff;
+  color: var(--accent);
+  font-weight: 500;
 }
 
 /* =====================================================
@@ -529,6 +565,8 @@ h2 {
    ===================================================== */
 footer {
   background: var(--bg-dark);
+  color: var(--text-on-dark);
   text-align: center;
   padding: 20px;
+  border-top: 1px solid rgba(2, 132, 199, 0.15);
 }

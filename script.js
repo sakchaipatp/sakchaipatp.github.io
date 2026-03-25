@@ -161,7 +161,7 @@ function drawLines() {
       line.setAttribute("x2", x2);
       line.setAttribute("y2", y2);
 
-      line.setAttribute("stroke", "#38bdf8");
+      line.setAttribute("stroke", "#0284c7");
       line.setAttribute("stroke-width", "2");
 
       svg.appendChild(line);
@@ -169,7 +169,6 @@ function drawLines() {
   });
 }
 
-window.addEventListener("load", drawLines);
 window.addEventListener("resize", drawLines);
 
 // Drag skill tree
@@ -209,7 +208,7 @@ window.addEventListener("mouseleave", () => {
 const GUIDE_HTML = `<span style="color:#94a3b8;font-style:italic;">
   Explore my skill tree.<br>
   Drag to move, scroll to zoom,<br>
-  and <strong style="color:#38bdf8;">click on a skill</strong> to view details.
+  and <strong style="color:#0284c7;">click on a skill</strong> to view details.
 </span>`;
 const FADE_MS   = 300;
 const IDLE_MS   = 15000;
@@ -252,7 +251,7 @@ document.querySelectorAll(".skill-node").forEach(node => {
     const desc  = `<br><br>${node.dataset.desc}`;
 
     setPanelContent(
-      `<strong style="color:#38bdf8;">${name}</strong>${stars}${level}${desc}`
+      `<strong style="color:#0284c7;">${name}</strong>${stars}${level}${desc}`
     );
     startIdleTimer();
   });
@@ -344,7 +343,13 @@ window.addEventListener("load", () => {
   currentX = (container.clientWidth - tree.offsetWidth * scale) / 2;
   currentY = 0;
 
-  updateTransform();
+  // ปิด CSS transition ชั่วคราวก่อน set transform ครั้งแรก
+  // เพื่อให้ getBoundingClientRect() ใน drawLines() อ่านค่าหลัง
+  // transform apply แล้ว ไม่ใช่ระหว่าง transition 50ms
+  tree.style.transition = "none";
+  tree.getBoundingClientRect(); // force reflow
+  updateTransform();            // set transform + drawLines() ทันที
+  tree.style.transition = "";   // คืน transition กลับ
 
   // แสดง guide text ทันทีโดยไม่ fade (ครั้งแรก)
   panel.innerHTML = GUIDE_HTML;
