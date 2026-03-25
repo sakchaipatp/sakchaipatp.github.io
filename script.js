@@ -3,8 +3,6 @@ document.querySelectorAll("nav a").forEach(link => {
   link.addEventListener("click", e => {
     const href = link.getAttribute("href");
 
-    // e.preventDefault();
-
     if (href.startsWith("#")) {
       e.preventDefault();
       const target = document.querySelector(href);
@@ -14,6 +12,29 @@ document.querySelectorAll("nav a").forEach(link => {
     }
   });
 });
+
+// Active nav highlight — ไฮไลต์ nav link ตาม section ที่กำลังแสดงอยู่
+(function () {
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll("nav a[href^='#']");
+  const OFFSET   = 100; // px จาก top ที่ถือว่า "active"
+
+  function updateActive() {
+    const scrollY = window.scrollY + OFFSET;
+    let current   = "";
+
+    sections.forEach(sec => {
+      if (scrollY >= sec.offsetTop) current = sec.id;
+    });
+
+    navLinks.forEach(link => {
+      link.classList.toggle("nav-active", link.getAttribute("href") === `#${current}`);
+    });
+  }
+
+  window.addEventListener("scroll", updateActive, { passive: true });
+  window.addEventListener("load",   updateActive);
+})();
 
 // Skill
 const main = document.getElementById("skill-main");
@@ -58,13 +79,13 @@ const gridPositions = {
   "skill-clickup":                { col: 4,  row: 5 },
   "skill-docs":                   { col: 5,  row: 5 },
   "skill-spreadsheets":           { col: 6,  row: 5 },
-  "skill-canva":                  { col: 7,  row: 5 },
-  "skill-figma":                  { col: 8,  row: 5 },
   "skill-design-thinking":        { col: 10, row: 5 },
   "skill-critical-thinking":      { col: 11, row: 5 },
   "skill-patience":               { col: 12, row: 5 },
 
   "skill-lua":                    { col: 1,  row: 6 },
+  "skill-canva":                  { col: 4,  row: 6 },
+  "skill-figma":                  { col: 5,  row: 6 }
 };
 
 // ================= TREE STRUCTURE =================
@@ -182,7 +203,7 @@ const GUIDE_HTML = `<span style="color:#94a3b8;font-style:italic;">
   and <strong style="color:#38bdf8;">click on a skill</strong> to view details.
 </span>`;
 const FADE_MS   = 300;
-const IDLE_MS   = 5000;
+const IDLE_MS   = 15000;
 
 const panel     = document.getElementById("skill-panel");
 let   idleTimer = null;
