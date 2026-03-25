@@ -72,7 +72,7 @@ h2 {
 /* Skills Tree */
 .skill-tree-container {
   position: relative;
-  height: 800px;
+  height: 700px;
   border: 2px solid #38bdf8;
   border-radius: 16px;
   overflow: hidden;
@@ -115,14 +115,13 @@ h2 {
 
 .skill-node {
   position: absolute;
-  width: 140px;
+  width: 160px;
   padding: 15px;
   border-radius: 10px;
   text-align: center;
   background: #020617;
   box-shadow: 0 0 8px rgba(56,189,248,0.6);
   user-select: none;
-  /* align-content: center; */
 }
 
 .skill-node:hover {
@@ -144,9 +143,9 @@ h2 {
 }
 
 .skill-node img {
-  /* margin-bottom: 10px; */
-  width: 60px;
-  height: 60px;
+  margin-bottom: 10px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
   pointer-events: none;
 }
