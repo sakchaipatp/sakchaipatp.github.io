@@ -398,3 +398,45 @@ function layoutTree() {
   tree.style.height = `${maxRow * rowHeight + padding * 2}px`;
 }
 //End Skill
+
+// ================= LIGHTBOX =================
+(function () {
+  const lb    = document.getElementById("lightbox");
+  const lbImg = lb.querySelector("img");
+  let closing = false;
+
+  function open(src) {
+    lbImg.src = src;
+    lb.classList.remove("closing");
+    lb.setAttribute("aria-hidden", "false");
+    lb.classList.add("open");
+    closing = false;
+  }
+
+  function close() {
+    if (closing) return;
+    closing = true;
+    lb.classList.add("closing");
+
+    // รอ animation bounceOut จบ (300ms) แล้วซ่อน
+    setTimeout(() => {
+      lb.classList.remove("open", "closing");
+      lb.setAttribute("aria-hidden", "true");
+      lbImg.src = "";
+      closing = false;
+    }, 300);
+  }
+
+  // คลิก overlay หรือรูปภาพ → ปิด
+  lb.addEventListener("click", close);
+
+  // Escape key → ปิด
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") close();
+  });
+
+  // คลิกรูปใน Quest Log และ Achievement → เปิด lightbox
+  document.querySelectorAll(".project-images img, .cert-card img").forEach(img => {
+    img.addEventListener("click", () => open(img.src));
+  });
+})();

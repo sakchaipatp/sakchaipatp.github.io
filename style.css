@@ -455,6 +455,12 @@ h2 {
   width: 50%;
   object-fit: cover;
   border-radius: 6px;
+  cursor: zoom-in;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.project-images img:hover {
+  transform: scale(1.06);
 }
 
 .project-card h3 {
@@ -536,6 +542,12 @@ h2 {
 .cert-card img {
   width: 100%;
   border-radius: 10px;
+  cursor: zoom-in;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cert-card img:hover {
+  transform: scale(1.04);
 }
 
 #certificates p {
@@ -567,6 +579,57 @@ h2 {
 .contact-item a {
   color: var(--accent);
   font-weight: 500;
+}
+
+/* =====================================================
+   Lightbox
+   ===================================================== */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  cursor: zoom-out;
+}
+
+#lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  cursor: zoom-out;
+  animation: lbBounceIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+#lightbox.closing img {
+  animation: lbBounceOut 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+@keyframes lbBounceIn {
+  0%   { transform: scale(0.4); opacity: 0; }
+  60%  { transform: scale(1.06);            }
+  80%  { transform: scale(0.97);            }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes lbBounceOut {
+  0%   { transform: scale(1);   opacity: 1; }
+  30%  { transform: scale(1.04);            }
+  100% { transform: scale(0.3); opacity: 0; }
 }
 
 /* =====================================================
