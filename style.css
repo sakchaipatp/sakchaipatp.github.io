@@ -76,8 +76,9 @@ header {
 /* --- Brand (left) --- */
 .header-brand {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 14px;
   flex-shrink: 0;
 }
 
@@ -418,6 +419,35 @@ h2 {
   margin-top: 15px;
   margin-bottom: 10px;
   color: var(--accent);
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 6px 0 14px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.meta-icon {
+  font-size: 0.78rem;
+}
+
+.meta-label {
+  color: var(--accent);
+  font-weight: 600;
+  margin-right: 2px;
 }
 
 .project-card h4 {

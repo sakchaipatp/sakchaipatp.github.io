@@ -20,12 +20,21 @@ document.querySelectorAll("nav a").forEach(link => {
   const OFFSET   = 100; // px จาก top ที่ถือว่า "active"
 
   function updateActive() {
-    const scrollY = window.scrollY + OFFSET;
-    let current   = "";
+    let current = "";
 
-    sections.forEach(sec => {
-      if (scrollY >= sec.offsetTop) current = sec.id;
-    });
+    // ถ้า scroll ถึงใกล้ bottom ให้ activate section สุดท้ายเสมอ
+    // (แก้กรณี section สุดท้าย content น้อยเกินจนเลื่อนไม่ถึง offsetTop)
+    const nearBottom =
+      window.innerHeight + window.scrollY >= document.body.scrollHeight - 80;
+
+    if (nearBottom) {
+      current = sections[sections.length - 1].id;
+    } else {
+      const scrollY = window.scrollY + OFFSET;
+      sections.forEach(sec => {
+        if (scrollY >= sec.offsetTop) current = sec.id;
+      });
+    }
 
     navLinks.forEach(link => {
       link.classList.toggle("nav-active", link.getAttribute("href") === `#${current}`);
