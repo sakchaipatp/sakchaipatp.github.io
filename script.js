@@ -306,6 +306,7 @@ function applyBounds() {
 
 window.addEventListener("load", () => {
   layoutTree();
+  applyGroupClasses();
 
   const container = document.querySelector(".skill-tree-container");
 
@@ -319,8 +320,26 @@ window.addEventListener("load", () => {
   panel.innerHTML = GUIDE_HTML;
 });
 
+// ================= GROUP COLORS =================
+// assign CSS class ตาม treeData เพื่อระบุสีกลุ่ม
+// (ไม่ต้องแก้ HTML ทีละ node — เพิ่ม/ลบ node ใน treeData แล้วสีตามได้เลย)
+const groupMap = {
+  "group-prog":   ["node-programming", ...treeData["node-programming"]],
+  "group-tools":  ["node-tools",       ...treeData["node-tools"]],
+  "group-others": ["node-others",      ...treeData["node-others"]],
+};
+
+function applyGroupClasses() {
+  Object.entries(groupMap).forEach(([cls, ids]) => {
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add(cls);
+    });
+  });
+}
+
 function layoutTree() {
-  const colWidth  = 160;
+  const colWidth  = 185;   // node width 160px + gap 25px
   const rowHeight = 200;
   const padding   = 40;
 
