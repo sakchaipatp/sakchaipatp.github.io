@@ -87,7 +87,7 @@ const gridPositions = {
   "skill-js":                     { col: 3,  row: 5 },
   "skill-clickup":                { col: 4,  row: 5 },
   "skill-docs":                   { col: 5,  row: 5 },
-  "skill-sheets":                 { col: 6,  row: 5 },
+  "skill-spreadsheets":           { col: 6,  row: 5 },
   "skill-design-thinking":        { col: 10, row: 5 },
   "skill-critical-thinking":      { col: 11, row: 5 },
   "skill-patience":               { col: 12, row: 5 },
@@ -110,7 +110,7 @@ const treeData = {
 
   "node-tools": [
     "skill-unity", "skill-github", "skill-notion",
-    "skill-clickup", "skill-docs", "skill-sheets",
+    "skill-clickup", "skill-docs", "skill-spreadsheets",
     "skill-canva", "skill-figma"
   ],
 
